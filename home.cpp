@@ -1,47 +1,26 @@
 #include "home.h"
 #include "ui_home.h"
+#include "page_search.h"
 #include <QFileDialog>
 #include <QPixmap>
 #include <QMessageBox>
 #include <QDebug>
 #include <QSqlDatabase>
 #include <QSqlError>
-#include <QMediaPlayer>
-#include <QTabWidget>
-#include <QVBoxLayout>
-#include <QApplication>
-#include<QLabel>
-#include <QWidget>
-#include <QPixmap>
-#include <QFile>
-#include <QImage>
+#include <QByteArray>
 #include <QBuffer>
-
-#include "page_search.h"
-#include <QIcon>
-//#include <QVideoWidget>
 
 extern QString l6;
 extern QString user_name;
 extern QString user;
 QString f;
+QByteArray byteArray;
 
 home::home(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::home)
 {
     ui->setupUi(this);
-      home::setStyleSheet("background-image: url(:/new/prefix1/background1.jpg);");
-     home::isFullScreen();
-    /* home::setStyleSheet(
-                 "QWidget {background-color: color: blue;}"
-                 "QLineEdit, QTabWidget {background-color: none; }"
-                 );
-*/
-    // ui->tabWidget_2->hide();
-
-     //ui->label_6->hide();
-     ui->label_7->hide();
     ui->groupBox_3->hide();
     ui->pushButton_5->hide();
     ui->tableView_2->hide();
@@ -56,26 +35,14 @@ home::home(QWidget *parent) :
         qDebug() << "Error: Connection with database failed" << database.lastError();
         QMessageBox::critical(this, "Database Error", "Failed to connect to the database");
     } else {
-       qDebug() << "Database: Connection ok";
+        qDebug() << "Database: Connection ok";
     }
-   /* ui->tabWidget->setStyleSheet("QTabWidget::pane { "
-                                "background-image: url(:/new/prefix1/background1.jpg); "
-                                "background-position: center; "
-                                "background-repeat: no-repeat; "
-                                "}");
-                                */
-    ui->tabWidget->setStyleSheet("QTabWidget#tabWidget > QWidget {background-image: url(:/new/prefix1/background1.jpg);}");
-
-
-
 }
 
 home::~home()
 {
     delete ui;
 }
-
-
 
 void home::showImagePickerWindow(QLabel *label6) {
     QString fileName = QFileDialog::getOpenFileName(this,
@@ -88,33 +55,22 @@ void home::showImagePickerWindow(QLabel *label6) {
     }
 }
 
-void home::showGifPickerWindow(QLabel *label6) {
-    QString fileName = QFileDialog::getOpenFileName(this,
-        "انتخاب گیف", "", "گیف‌ها (*.gif)");
-
+void home::showGifPickerWindow(QLabel *label7)
+{
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open GIF"), "", tr("GIF Files (*.gif)"));
     if (!fileName.isEmpty()) {
         QMovie *movie = new QMovie(fileName);
-        label6->setMovie(movie);
+        if (!movie->isValid()) {
+            QMessageBox::warning(this, tr("Error"), tr("The selected file is not a valid GIF."));
+            delete movie;
+           // label7->setScaledContents(true);
+            return;
+        }
+        movie->setScaledSize(label7->size());
+        label7->setMovie(movie);
         movie->start();
-        label6->setScaledContents(true);
     }
 }
-
-
-
-
-
-/*void home::showVideoPickerWindow(QVideoWidget *videoWidget, QMediaPlayer *mediaPlayer) {
-    QString fileName = QFileDialog::getOpenFileName(this,
-        "انتخاب ویدیو", "", "ویدیوها (*.mp4 *.avi *.mkv)");
-
-    if (!fileName.isEmpty()) {
-        mediaPlayer->setMedia(QUrl::fromLocalFile(fileName));
-        mediaPlayer->setVideoOutput(videoWidget);
-        mediaPlayer->play();
-    }
-}
-*/
 
 void home::on_pushButton_2_clicked()
 {
@@ -135,7 +91,6 @@ void home::on_pushButton_3_clicked()
 {
     page_search *w4 = new page_search;
     w4->show();
-      this->close();
 }
 
 void home::on_pushButton_4_clicked()
@@ -179,33 +134,96 @@ void home::on_pushButton_7_clicked()
 
 void home::on_pushButton_8_clicked()
 {
-    //ui->label_7->hide();
-    //ui->label_6->show();
     showImagePickerWindow(ui->label_6);
 }
 
 void home::on_pushButton_9_clicked()
 {
-    //ui->label_6->hide();
-   // ui->label_7->show();
     showGifPickerWindow(ui->label_7);
 }
 
-
-
 void home::on_pushButton_11_clicked()
 {
+    // گرفتن QPixmap از QLabel
+    const QPixmap *pixmapPtr = ui->label_6->pixmap();
+    if (!pixmapPtr) {
+        qDebug() << "No image in the label.";
+        return;
+    }
+    QPixmap pixmap = *pixmapPtr; // تبدیل اشاره‌گر به QPixmap
+    qDebug() << "Image successfully retrieved from QLabel.";
 
+    // تبدیل QPixmap به QByteArray
+    QByteArray byteArray;
+    QBuffer buffer(&byteArray);
+    buffer.open(QIODevice::WriteOnly);
+    if (!pixmap.save(&buffer, "JPG")) {
+        qDebug() << "Failed to save pixmap to buffer.";
+        return;
+    }
+    qDebug() << "Pixmap successfully saved to buffer.";
 
+    // اتصال به دیتابیس و ذخیره عکس
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName("d:\\linkedin2.db");
 
+    if (!db.open()) {
+        qDebug() << "Error: connection with database fail";
+        return;
+    } else {
+        qDebug() << "Database: connection ok";
+    }
 
+    QSqlQuery query;
+    query.prepare("UPDATE post SET photo = :photo WHERE username = :username");
+    query.bindValue(":username", user);
+    query.bindValue(":photo", byteArray);
 
+    if(!query.exec()) {
+        qDebug() << "Error: failed to update image in database: " << query.lastError();
+    } else {
+        qDebug() << "Image updated successfully";
+    }
 
+    db.close();
 }
 
-
-void home::on_pushButton_clicked()
+void home::on_pushButton_12_clicked()
 {
-   //ui->tabWidget_2->show();
+    loadImageFromDatabase();
 }
 
+void home::loadImageFromDatabase() {
+    // اتصال به دیتابیس
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName("d:\\linkedin2.db");
+
+    if (!db.open()) {
+        qDebug() << "Error: connection with database fail";
+        return;
+    } else {
+        qDebug() << "Database: connection ok";
+    }
+
+    // اجرای کوئری برای خواندن عکس
+    QSqlQuery query;
+    query.prepare("SELECT photo FROM post WHERE username = :username");
+    query.bindValue(":username", user);
+
+    if (!query.exec()) {
+        qDebug() << "Error: failed to fetch image from database: " << query.lastError();
+        return;
+    }
+
+    if (query.next()) {
+        QByteArray byteArray = query.value(0).toByteArray();
+        QPixmap pixmap;
+        pixmap.loadFromData(byteArray);
+        ui->label_6->setPixmap(pixmap);
+        ui->label_6->setScaledContents(true);
+    } else {
+        qDebug() << "No image found for username: " << user;
+    }
+
+    db.close();
+}

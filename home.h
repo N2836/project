@@ -1,3 +1,4 @@
+
 #ifndef HOME_H
 #define HOME_H
 
@@ -7,11 +8,11 @@
 #include <QLabel>
 #include <QFileDialog>
 #include <QPixmap>
+#include <QByteArray>
+#include <QBuffer>
 #include <QMovie>
 #include <QMediaPlayer>
-//#include <QVideoWidget>
-#include <QWidget>
-#include <QVBoxLayout>
+#include <QDebug>
 
 extern QString l6;
 extern QString search;
@@ -39,18 +40,14 @@ private slots:
     void on_pushButton_7_clicked();
     void on_pushButton_8_clicked();
     void on_pushButton_9_clicked();
-    //void on_pushButton_video_clicked();
-
     void on_pushButton_11_clicked();
-
-    void on_pushButton_clicked();
+    void on_pushButton_12_clicked(); // New slot for loading image
 
 private:
     Ui::home *ui;
     void showImagePickerWindow(QLabel *label6);
-    void showGifPickerWindow(QLabel *label6);
-    //void showVideoPickerWindow(QVideoWidget *videoWidget, QMediaPlayer *mediaPlayer);
+    void showGifPickerWindow(QLabel *label7);
+    void loadImageFromDatabase(); // New function for loading image
 };
 
 #endif // HOME_H
-
