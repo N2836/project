@@ -68,6 +68,26 @@ private slots:
 
    void on_pushButton_10_clicked();
 
+
+
+   void on_pushButton_22_clicked();
+
+  void on_pushButton_23_clicked();
+
+   void on_pushButton_24_clicked();
+   void on_pushButton_25_clicked();
+   void on_pushButton_26_clicked();
+   void on_pushButton_27_clicked();
+   void on_pushButton_28_clicked();
+   void on_pushButton_29_clicked();
+   void on_pushButton_30_clicked();
+   void on_pushButton_31_clicked();
+   void on_pushButton_32_clicked();
+   void on_pushButton_33_clicked();
+   void on_pushButton_34_clicked();
+   void on_pushButton_35_clicked();
+   void on_pushButton_36_clicked();
+
 private:
     Ui::home *ui;
     void showImagePickerWindow(QLabel *label6);
@@ -79,6 +99,17 @@ private:
     void saveGifToDatabase(const QByteArray& gifData, const QString& username);
     QByteArray getGifDataFromSomewhereElse();
     void loadGifFromDatabase();
+
+    void showImagePickerWindow2(QLabel *label9);
+    void loadImageFromDatabase2();
+    void loadImageFromDatabase3();
+    void showImagePickerWindow3(QLabel *label13);
+    void loadImageFromDatabase4();
+    void showImagePickerWindow4(QLabel *label14);
+    void showImagePickerWindow5(QLabel *label15);
+    void loadImageFromDatabase5();
+    void showImagePickerWindow6(QLabel *label16);
+ void loadImageFromDatabase6();
 };
 
 #endif // HOME_H

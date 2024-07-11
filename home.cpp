@@ -69,6 +69,31 @@ home::home(QWidget *parent) :
     ui->tableView_2->hide();
     ui->groupBox_2->hide();
     ui->tabWidget_2->hide();
+
+    ui->label_6->hide();
+    ui->label_9->hide();
+    ui->label_13->hide();
+    ui->label_14->hide();
+    ui->label_15->hide();
+    ui->label_16->hide();
+    ui->pushButton_11->hide();
+    ui->pushButton_12->hide();
+    ui->pushButton_22->hide();
+    ui->pushButton_23->hide();
+    ui->pushButton_24->hide();
+    ui->pushButton_25->hide();
+    ui->pushButton_26->hide();
+    ui->pushButton_27->hide();
+    ui->pushButton_28->hide();
+    ui->pushButton_29->hide();
+    ui->pushButton_30->hide();
+    ui->pushButton_31->hide();
+    ui->pushButton_32->hide();
+    ui->pushButton_33->hide();
+    ui->pushButton_34->hide();
+    ui->pushButton_35->hide();
+    ui->pushButton_36->hide();
+
     ui->tabWidget->setTabText(0,tr("My Network"));
     ui->tabWidget->setTabText(1,tr("Jobs"));
     ui->tabWidget->setTabText(2,tr("Messaging"));
@@ -268,7 +293,10 @@ void home::on_pushButton_7_clicked()
 
 void home::on_pushButton_8_clicked()
 {
+    ui->label_6->show();
     showImagePickerWindow(ui->label_6);
+    ui->pushButton_11->show();
+    ui->pushButton_12->show();
 }
 
 void home::on_pushButton_9_clicked()
@@ -325,6 +353,8 @@ void home::on_pushButton_11_clicked()
 void home::on_pushButton_12_clicked()
 {
     loadImageFromDatabase();
+    ui->label_9->show();
+    ui->pushButton_22->show();
 }
 
 void home::loadImageFromDatabase() {
@@ -388,6 +418,99 @@ void home::on_pushButton_clicked()
             pixmap.loadFromData(imageData);
             ui->label_11->setPixmap(pixmap);
             ui->label_11->setScaledContents(true);
+        }
+
+
+
+
+
+        QSqlQuery q;
+        q.prepare("SELECT photo_2 FROM post WHERE username = :username");
+        q.bindValue(":username", user_name);
+        q.exec();
+
+        if (q.next()) {
+            // دریافت داده عکس از دیتابیس
+            QByteArray imageData = q.value("photo_2").toByteArray();
+
+            // تبدیل داده عکس به QPixmap و نمایش در لیبل
+            QPixmap pixmap;
+            pixmap.loadFromData(imageData);
+            ui->label_17->setPixmap(pixmap);
+            ui->label_17->setScaledContents(true);
+        }
+
+
+
+
+        QSqlQuery h;
+        h.prepare("SELECT photo_3 FROM post WHERE username = :username");
+        h.bindValue(":username", user_name);
+        h.exec();
+
+        if (h.next()) {
+            // دریافت داده عکس از دیتابیس
+            QByteArray imageData = h.value("photo_3").toByteArray();
+
+            // تبدیل داده عکس به QPixmap و نمایش در لیبل
+            QPixmap pixmap;
+            pixmap.loadFromData(imageData);
+            ui->label_18->setPixmap(pixmap);
+            ui->label_18->setScaledContents(true);
+        }
+
+
+
+
+        QSqlQuery d;
+        d.prepare("SELECT photo_4 FROM post WHERE username = :username");
+        d.bindValue(":username", user_name);
+        d.exec();
+
+        if (d.next()) {
+            // دریافت داده عکس از دیتابیس
+            QByteArray imageData = d.value("photo_4").toByteArray();
+
+            // تبدیل داده عکس به QPixmap و نمایش در لیبل
+            QPixmap pixmap;
+            pixmap.loadFromData(imageData);
+            ui->label_19->setPixmap(pixmap);
+            ui->label_19->setScaledContents(true);
+        }
+
+
+        QSqlQuery y;
+        y.prepare("SELECT photo_5 FROM post WHERE username = :username");
+        y.bindValue(":username", user_name);
+        y.exec();
+
+        if (y.next()) {
+            // دریافت داده عکس از دیتابیس
+            QByteArray imageData = y.value("photo_5").toByteArray();
+
+            // تبدیل داده عکس به QPixmap و نمایش در لیبل
+            QPixmap pixmap;
+            pixmap.loadFromData(imageData);
+            ui->label_20->setPixmap(pixmap);
+            ui->label_20->setScaledContents(true);
+        }
+
+
+
+        QSqlQuery r;
+        r.prepare("SELECT photo_6 FROM post WHERE username = :username");
+        r.bindValue(":username", user_name);
+        r.exec();
+
+        if (r.next()) {
+            // دریافت داده عکس از دیتابیس
+            QByteArray imageData = r.value("photo_6").toByteArray();
+
+            // تبدیل داده عکس به QPixmap و نمایش در لیبل
+            QPixmap pixmap;
+            pixmap.loadFromData(imageData);
+            ui->label_21->setPixmap(pixmap);
+            ui->label_21->setScaledContents(true);
         }
     }
 
@@ -618,3 +741,566 @@ void home::on_pushButton_10_clicked() {
         qDebug() << "No file selected.";
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+void home::showImagePickerWindow2(QLabel *label9) {
+    QString fileName = QFileDialog::getOpenFileName(this,
+        "انتخاب عکس", "", "تصاویر (*.png *.jpg *.jpeg)");
+
+    if (!fileName.isEmpty()) {
+        QPixmap pixmap(fileName);
+        label9->setPixmap(pixmap);
+        label9->setScaledContents(true);
+    }
+}
+
+void home::on_pushButton_22_clicked()
+{
+    showImagePickerWindow2(ui->label_9);
+    ui->pushButton_23->show();
+    ui->pushButton_24->show();
+}
+
+void home::on_pushButton_23_clicked()
+{
+    // گرفتن QPixmap از QLabel
+    const QPixmap *pixmapPtr = ui->label_9->pixmap();
+    if (!pixmapPtr) {
+        qDebug() << "No image in the label.";
+        return;
+    }
+    QPixmap pixmap = *pixmapPtr; // تبدیل اشاره‌گر به QPixmap
+    qDebug() << "Image successfully retrieved from QLabel.";
+
+    // تبدیل QPixmap به QByteArray
+    QByteArray byteArray;
+    QBuffer buffer(&byteArray);
+    buffer.open(QIODevice::WriteOnly);
+    if (!pixmap.save(&buffer, "JPG")) {
+        qDebug() << "Failed to save pixmap to buffer.";
+        return;
+    }
+    qDebug() << "Pixmap successfully saved to buffer.";
+
+    // اتصال به دیتابیس و ذخیره عکس
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName("d:\\linkedin2.db");
+
+    if (!db.open()) {
+        qDebug() << "Error: connection with database fail";
+        return;
+    } else {
+        qDebug() << "Database: connection ok";
+    }
+
+    QSqlQuery query;
+    query.prepare("UPDATE post SET photo_2 = :photo WHERE username = :username");
+    query.bindValue(":username", user);
+    query.bindValue(":photo", byteArray);
+
+    if(!query.exec()) {
+        qDebug() << "Error: failed to update image in database: " << query.lastError();
+    } else {
+        qDebug() << "Image updated successfully";
+    }
+
+    db.close();
+}
+
+void home::on_pushButton_24_clicked()
+{
+    loadImageFromDatabase2();
+    ui->label_13->show();
+    ui->pushButton_25->show();
+}
+
+void home::loadImageFromDatabase2() {
+    // اتصال به دیتابیس
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName("d:\\linkedin2.db");
+
+    if (!db.open()) {
+        qDebug() << "Error: connection with database fail";
+        return;
+    } else {
+        qDebug() << "Database: connection ok";
+    }
+
+    // اجرای کوئری برای خواندن عکس
+    QSqlQuery query;
+    query.prepare("SELECT photo_2 FROM post WHERE username = :username");
+    query.bindValue(":username", user);
+
+    if (!query.exec()) {
+        qDebug() << "Error: failed to fetch image from database: " << query.lastError();
+        return;
+    }
+
+    if (query.next()) {
+        QByteArray byteArray = query.value(0).toByteArray();
+        QPixmap pixmap;
+        pixmap.loadFromData(byteArray);
+        ui->label_9->setPixmap(pixmap);
+        ui->label_9->setScaledContents(true);
+    } else {
+        qDebug() << "No image found for username: " << user;
+    }
+
+    db.close();
+}
+
+
+
+
+
+
+
+
+void home::showImagePickerWindow3(QLabel *label13) {
+    QString fileName = QFileDialog::getOpenFileName(this,
+        "انتخاب عکس", "", "تصاویر (*.png *.jpg *.jpeg)");
+
+    if (!fileName.isEmpty()) {
+        QPixmap pixmap(fileName);
+        label13->setPixmap(pixmap);
+        label13->setScaledContents(true);
+    }
+}
+
+void home::on_pushButton_25_clicked()
+{
+    showImagePickerWindow3(ui->label_13);
+     ui->pushButton_26->show();
+      ui->pushButton_27->show();
+}
+
+void home::on_pushButton_26_clicked()
+{
+    // گرفتن QPixmap از QLabel
+    const QPixmap *pixmapPtr = ui->label_13->pixmap();
+    if (!pixmapPtr) {
+        qDebug() << "No image in the label.";
+        return;
+    }
+    QPixmap pixmap = *pixmapPtr; // تبدیل اشاره‌گر به QPixmap
+    qDebug() << "Image successfully retrieved from QLabel.";
+
+    // تبدیل QPixmap به QByteArray
+    QByteArray byteArray;
+    QBuffer buffer(&byteArray);
+    buffer.open(QIODevice::WriteOnly);
+    if (!pixmap.save(&buffer, "JPG")) {
+        qDebug() << "Failed to save pixmap to buffer.";
+        return;
+    }
+    qDebug() << "Pixmap successfully saved to buffer.";
+
+    // اتصال به دیتابیس و ذخیره عکس
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName("d:\\linkedin2.db");
+
+    if (!db.open()) {
+        qDebug() << "Error: connection with database fail";
+        return;
+    } else {
+        qDebug() << "Database: connection ok";
+    }
+
+    QSqlQuery query;
+    query.prepare("UPDATE post SET photo_3 = :photo WHERE username = :username");
+    query.bindValue(":username", user);
+    query.bindValue(":photo", byteArray);
+
+    if(!query.exec()) {
+        qDebug() << "Error: failed to update image in database: " << query.lastError();
+    } else {
+        qDebug() << "Image updated successfully";
+    }
+
+    db.close();
+}
+
+void home::on_pushButton_27_clicked()
+{
+    loadImageFromDatabase3();
+     ui->label_14->show();
+     ui->pushButton_28->show();
+}
+
+void home::loadImageFromDatabase3() {
+    // اتصال به دیتابیس
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName("d:\\linkedin2.db");
+
+    if (!db.open()) {
+        qDebug() << "Error: connection with database fail";
+        return;
+    } else {
+        qDebug() << "Database: connection ok";
+    }
+
+    // اجرای کوئری برای خواندن عکس
+    QSqlQuery query;
+    query.prepare("SELECT photo_3 FROM post WHERE username = :username");
+    query.bindValue(":username", user);
+
+    if (!query.exec()) {
+        qDebug() << "Error: failed to fetch image from database: " << query.lastError();
+        return;
+    }
+
+    if (query.next()) {
+        QByteArray byteArray = query.value(0).toByteArray();
+        QPixmap pixmap;
+        pixmap.loadFromData(byteArray);
+        ui->label_13->setPixmap(pixmap);
+        ui->label_13->setScaledContents(true);
+    } else {
+        qDebug() << "No image found for username: " << user;
+    }
+
+    db.close();
+}
+
+
+
+
+
+
+void home::showImagePickerWindow4(QLabel *label14) {
+    QString fileName = QFileDialog::getOpenFileName(this,
+        "انتخاب عکس", "", "تصاویر (*.png *.jpg *.jpeg)");
+
+    if (!fileName.isEmpty()) {
+        QPixmap pixmap(fileName);
+        label14->setPixmap(pixmap);
+        label14->setScaledContents(true);
+    }
+}
+
+void home::on_pushButton_28_clicked()
+{
+    showImagePickerWindow4(ui->label_14);
+    ui->pushButton_29->show();
+    ui->pushButton_30->show();
+}
+
+void home::on_pushButton_29_clicked()
+{
+    // گرفتن QPixmap از QLabel
+    const QPixmap *pixmapPtr = ui->label_14->pixmap();
+    if (!pixmapPtr) {
+        qDebug() << "No image in the label.";
+        return;
+    }
+    QPixmap pixmap = *pixmapPtr; // تبدیل اشاره‌گر به QPixmap
+    qDebug() << "Image successfully retrieved from QLabel.";
+
+    // تبدیل QPixmap به QByteArray
+    QByteArray byteArray;
+    QBuffer buffer(&byteArray);
+    buffer.open(QIODevice::WriteOnly);
+    if (!pixmap.save(&buffer, "JPG")) {
+        qDebug() << "Failed to save pixmap to buffer.";
+        return;
+    }
+    qDebug() << "Pixmap successfully saved to buffer.";
+
+    // اتصال به دیتابیس و ذخیره عکس
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName("d:\\linkedin2.db");
+
+    if (!db.open()) {
+        qDebug() << "Error: connection with database fail";
+        return;
+    } else {
+        qDebug() << "Database: connection ok";
+    }
+
+    QSqlQuery query;
+    query.prepare("UPDATE post SET photo_4 = :photo WHERE username = :username");
+    query.bindValue(":username", user);
+    query.bindValue(":photo", byteArray);
+
+    if(!query.exec()) {
+        qDebug() << "Error: failed to update image in database: " << query.lastError();
+    } else {
+        qDebug() << "Image updated successfully";
+    }
+
+    db.close();
+}
+
+void home::on_pushButton_30_clicked()
+{
+    loadImageFromDatabase4();
+    ui->label_15->show();
+    ui->pushButton_31->show();
+}
+
+void home::loadImageFromDatabase4() {
+    // اتصال به دیتابیس
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName("d:\\linkedin2.db");
+
+    if (!db.open()) {
+        qDebug() << "Error: connection with database fail";
+        return;
+    } else {
+        qDebug() << "Database: connection ok";
+    }
+
+    // اجرای کوئری برای خواندن عکس
+    QSqlQuery query;
+    query.prepare("SELECT photo_4 FROM post WHERE username = :username");
+    query.bindValue(":username", user);
+
+    if (!query.exec()) {
+        qDebug() << "Error: failed to fetch image from database: " << query.lastError();
+        return;
+    }
+
+    if (query.next()) {
+        QByteArray byteArray = query.value(0).toByteArray();
+        QPixmap pixmap;
+        pixmap.loadFromData(byteArray);
+        ui->label_14->setPixmap(pixmap);
+        ui->label_14->setScaledContents(true);
+    } else {
+        qDebug() << "No image found for username: " << user;
+    }
+
+    db.close();
+}
+
+
+
+
+
+
+
+void home::showImagePickerWindow5(QLabel *label15) {
+    QString fileName = QFileDialog::getOpenFileName(this,
+        "انتخاب عکس", "", "تصاویر (*.png *.jpg *.jpeg)");
+
+    if (!fileName.isEmpty()) {
+        QPixmap pixmap(fileName);
+        label15->setPixmap(pixmap);
+        label15->setScaledContents(true);
+    }
+}
+
+void home::on_pushButton_31_clicked()
+{
+    showImagePickerWindow5(ui->label_15);
+    ui->pushButton_32->show();
+    ui->pushButton_33->show();
+}
+
+void home::on_pushButton_32_clicked()
+{
+    // گرفتن QPixmap از QLabel
+    const QPixmap *pixmapPtr = ui->label_15->pixmap();
+    if (!pixmapPtr) {
+        qDebug() << "No image in the label.";
+        return;
+    }
+    QPixmap pixmap = *pixmapPtr; // تبدیل اشاره‌گر به QPixmap
+    qDebug() << "Image successfully retrieved from QLabel.";
+
+    // تبدیل QPixmap به QByteArray
+    QByteArray byteArray;
+    QBuffer buffer(&byteArray);
+    buffer.open(QIODevice::WriteOnly);
+    if (!pixmap.save(&buffer, "JPG")) {
+        qDebug() << "Failed to save pixmap to buffer.";
+        return;
+    }
+    qDebug() << "Pixmap successfully saved to buffer.";
+
+    // اتصال به دیتابیس و ذخیره عکس
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName("d:\\linkedin2.db");
+
+    if (!db.open()) {
+        qDebug() << "Error: connection with database fail";
+        return;
+    } else {
+        qDebug() << "Database: connection ok";
+    }
+
+    QSqlQuery query;
+    query.prepare("UPDATE post SET photo_5 = :photo WHERE username = :username");
+    query.bindValue(":username", user);
+    query.bindValue(":photo", byteArray);
+
+    if(!query.exec()) {
+        qDebug() << "Error: failed to update image in database: " << query.lastError();
+    } else {
+        qDebug() << "Image updated successfully";
+    }
+
+    db.close();
+}
+
+void home::on_pushButton_33_clicked()
+{
+    loadImageFromDatabase5();
+    ui->label_16->show();
+    ui->pushButton_34->show();
+}
+
+void home::loadImageFromDatabase5() {
+    // اتصال به دیتابیس
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName("d:\\linkedin2.db");
+
+    if (!db.open()) {
+        qDebug() << "Error: connection with database fail";
+        return;
+    } else {
+        qDebug() << "Database: connection ok";
+    }
+
+    // اجرای کوئری برای خواندن عکس
+    QSqlQuery query;
+    query.prepare("SELECT photo_5 FROM post WHERE username = :username");
+    query.bindValue(":username", user);
+
+    if (!query.exec()) {
+        qDebug() << "Error: failed to fetch image from database: " << query.lastError();
+        return;
+    }
+
+    if (query.next()) {
+        QByteArray byteArray = query.value(0).toByteArray();
+        QPixmap pixmap;
+        pixmap.loadFromData(byteArray);
+        ui->label_15->setPixmap(pixmap);
+        ui->label_15->setScaledContents(true);
+    } else {
+        qDebug() << "No image found for username: " << user;
+    }
+
+    db.close();
+}
+
+
+
+
+
+void home::showImagePickerWindow6(QLabel *label16) {
+    QString fileName = QFileDialog::getOpenFileName(this,
+        "انتخاب عکس", "", "تصاویر (*.png *.jpg *.jpeg)");
+
+    if (!fileName.isEmpty()) {
+        QPixmap pixmap(fileName);
+        label16->setPixmap(pixmap);
+        label16->setScaledContents(true);
+    }
+}
+
+void home::on_pushButton_34_clicked()
+{
+    showImagePickerWindow6(ui->label_16);
+        ui->pushButton_35->show();
+            ui->pushButton_36->show();
+}
+
+void home::on_pushButton_35_clicked()
+{
+    // گرفتن QPixmap از QLabel
+    const QPixmap *pixmapPtr = ui->label_16->pixmap();
+    if (!pixmapPtr) {
+        qDebug() << "No image in the label.";
+        return;
+    }
+    QPixmap pixmap = *pixmapPtr; // تبدیل اشاره‌گر به QPixmap
+    qDebug() << "Image successfully retrieved from QLabel.";
+
+    // تبدیل QPixmap به QByteArray
+    QByteArray byteArray;
+    QBuffer buffer(&byteArray);
+    buffer.open(QIODevice::WriteOnly);
+    if (!pixmap.save(&buffer, "JPG")) {
+        qDebug() << "Failed to save pixmap to buffer.";
+        return;
+    }
+    qDebug() << "Pixmap successfully saved to buffer.";
+
+    // اتصال به دیتابیس و ذخیره عکس
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName("d:\\linkedin2.db");
+
+    if (!db.open()) {
+        qDebug() << "Error: connection with database fail";
+        return;
+    } else {
+        qDebug() << "Database: connection ok";
+    }
+
+    QSqlQuery query;
+    query.prepare("UPDATE post SET photo_6 = :photo WHERE username = :username");
+    query.bindValue(":username", user);
+    query.bindValue(":photo", byteArray);
+
+    if(!query.exec()) {
+        qDebug() << "Error: failed to update image in database: " << query.lastError();
+    } else {
+        qDebug() << "Image updated successfully";
+    }
+
+    db.close();
+}
+
+void home::on_pushButton_36_clicked()
+{
+    loadImageFromDatabase6();
+}
+
+void home::loadImageFromDatabase6() {
+    // اتصال به دیتابیس
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName("d:\\linkedin2.db");
+
+    if (!db.open()) {
+        qDebug() << "Error: connection with database fail";
+        return;
+    } else {
+        qDebug() << "Database: connection ok";
+    }
+
+    // اجرای کوئری برای خواندن عکس
+    QSqlQuery query;
+    query.prepare("SELECT photo_6 FROM post WHERE username = :username");
+    query.bindValue(":username", user);
+
+    if (!query.exec()) {
+        qDebug() << "Error: failed to fetch image from database: " << query.lastError();
+        return;
+    }
+
+    if (query.next()) {
+        QByteArray byteArray = query.value(0).toByteArray();
+        QPixmap pixmap;
+        pixmap.loadFromData(byteArray);
+        ui->label_16->setPixmap(pixmap);
+        ui->label_16->setScaledContents(true);
+    } else {
+        qDebug() << "No image found for username: " << user;
+    }
+
+    db.close();
+}
+
